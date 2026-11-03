@@ -1,0 +1,30 @@
+{
+  "card": {
+    "width": 45,
+    "height": 16
+  },
+  "printers": {
+    "home": {
+      "type": "pdf",
+      "path": "HP_OfficeJet_Pro_8020_series__836CC5___911_",
+      "width": 4.75,
+      "height": 3.0
+    },
+    "work": {
+      "type": "pdf",
+      "path": "/work/printer",
+      "width": 4.75,
+      "height": 3.0
+    }
+  },
+  "default_printer": "home",
+  "font": {
+    "family": "Courier New",
+    "is_monospace": true,
+    "size": 12
+  },
+  "layout": {
+    "wrap_lines": true,
+    "trim_trailing": true
+  }
+}

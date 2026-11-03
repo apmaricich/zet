@@ -1,14 +1,322 @@
 {
-  "tasks" : [
-
-  ],
   "config" : {
-    "tagDisplayLimit" : 0,
+    "backlogTags" : [
+      "#backlog"
+    ],
+    "sort" : "completed",
     "lists" : [
       "backlogTags",
       "pinTags",
       "command"
     ],
-    "sort" : "completed"
-  }
+    "pinTags" : [
+      "#pin"
+    ],
+    "tagDisplayLimit" : 0,
+    "displayLimit" : 8,
+    "command" : [
+      "feature",
+      "bug",
+      "backlog"
+    ]
+  },
+  "tasks" : [
+    {
+      "tags" : [
+        "#backlog"
+      ],
+      "id" : 1,
+      "updatedDate" : 1793719050.83763,
+      "title" : "print monthly card",
+      "createdDate" : 1793719050.8354192,
+      "description" : "The ability to provide a month and year, and it wprint a portrait orientation calendar for the given month.",
+      "completed" : false
+    },
+    {
+      "completed" : true,
+      "completedDate" : 1793720035.961277,
+      "description" : "Initialize package.json, tsconfig.json, and build configuration. Use strict TypeScript configuration, proper build scripts, and dependency management for the index card printer application.",
+      "id" : 2,
+      "title" : "Set up TypeScript project",
+      "createdDate" : 1793719760.361654,
+      "tags" : [
+        "#infrastructure"
+      ]
+    },
+    {
+      "title" : "Create config.json",
+      "tags" : [
+        "#config"
+      ],
+      "completed" : true,
+      "completedDate" : 1793720062.1222119,
+      "id" : 3,
+      "description" : "Define configuration schema for the index card printer. Include card dimensions (width\/height in pixels and characters), font handling options, and printer configuration (multiple print devices). Example: { cardWidthChars: 40, maxRows: 12, monospaceFont: true, printers: { home: { type: 'pdf', path: '\/home\/printer' } } }",
+      "createdDate" : 1793719760.3677139
+    },
+    {
+      "completed" : true,
+      "title" : "Implement card formatting engine",
+      "description" : "Core text formatting logic: parse raw text content, apply line wrapping based on card dimensions, handle monospace font rendering, and generate formatted output. Must support numbered lists, circular bullet lists, and arrow lists.",
+      "tags" : [
+        "#core"
+      ],
+      "id" : 4,
+      "createdDate" : 1793719760.374264,
+      "completedDate" : 1793720154.9945569
+    },
+    {
+      "createdDate" : 1793719760.379493,
+      "description" : "Build the terminal command-line interface that accepts text content via parameter. Parse command-line arguments, read config.json from appropriate location, handle input validation, and manage execution flow.",
+      "title" : "Create CLI interface",
+      "completed" : true,
+      "id" : 5,
+      "completedDate" : 1793720357.3939571,
+      "tags" : [
+        "#cli"
+      ]
+    },
+    {
+      "description" : "Add terminal preview mode that visually prints the index card in the terminal based on configured dimensions. Show how the card would look when printed, including line wrapping and font handling. Should be accessible via --dry-run flag.",
+      "title" : "Implement dry-run mode",
+      "tags" : [
+        "#feature"
+      ],
+      "completed" : true,
+      "createdDate" : 1793719760.3841619,
+      "completedDate" : 1793720398.9625049,
+      "id" : 6
+    },
+    {
+      "description" : "Support multiple print devices in config.json. Allow users to specify which printer to use via CLI flag (e.g., --printer work). Include printer configuration with type, path, and dimensions.",
+      "completedDate" : 1793720467.3621449,
+      "id" : 7,
+      "tags" : [
+        "#config"
+      ],
+      "completed" : true,
+      "title" : "Implement printer configuration",
+      "createdDate" : 1793719760.3890891
+    },
+    {
+      "title" : "Implement card printing",
+      "completed" : true,
+      "createdDate" : 1793719760.3934579,
+      "id" : 8,
+      "completedDate" : 1793720502.143975,
+      "description" : "Add functionality to output the formatted card to stdout in plain text. Handle font rendering considerations and ensure proper formatting for physical index card printing.",
+      "tags" : [
+        "#output"
+      ]
+    },
+    {
+      "id" : 9,
+      "tags" : [
+        "#feature"
+      ],
+      "description" : "Implement different list types: numbered lists, circular bullet lists, and arrow lists. Ensure proper line wrapping and formatting when these list types are present in the card content.",
+      "completed" : true,
+      "createdDate" : 1793719760.397697,
+      "completedDate" : 1793720692.2378631,
+      "title" : "Add list formatting support"
+    },
+    {
+      "tags" : [
+        "#quality"
+      ],
+      "createdDate" : 1793719760.4021959,
+      "title" : "Add linting support",
+      "completed" : true,
+      "description" : "Configure ESLint with TypeScript support. Install @typescript-eslint\/parser and @typescript-eslint\/eslint-plugin, create .eslintrc.json with appropriate rules, and add lint scripts to package.json.",
+      "completedDate" : 1793720979.0857301,
+      "id" : 10
+    },
+    {
+      "description" : "Add comprehensive test coverage including unit tests for formatting logic, CLI integration tests, config file reading tests, and printer configuration tests. Use a suitable test framework.",
+      "title" : "Write tests",
+      "completedDate" : 1793721290.5341501,
+      "completed" : true,
+      "tags" : [
+        "#testing"
+      ],
+      "createdDate" : 1793719760.405757,
+      "id" : 11
+    },
+    {
+      "description" : "Use execFileSync with array arguments instead of string interpolation to prevent shell injection from printer.path in config.json",
+      "tags" : [
+        "#bug"
+      ],
+      "completedDate" : 1793729685.9005909,
+      "title" : "Fix command injection vulnerability in sendToPrinter",
+      "completed" : true,
+      "id" : 12,
+      "createdDate" : 1793729611.170651
+    },
+    {
+      "tags" : [
+        "#refactor"
+      ],
+      "description" : "Both src\/index.ts and src\/formatter\/card.ts have their own loadConfig with different behavior. Create a shared config module and remove duplicates",
+      "id" : 13,
+      "completed" : true,
+      "title" : "Consolidate duplicate loadConfig functions",
+      "createdDate" : 1793729611.1768551,
+      "completedDate" : 1793729800.5480289
+    },
+    {
+      "id" : 14,
+      "description" : "The class-based Card implementation in src\/card.ts is never imported or used. Delete it or migrate to it (it has better padding logic)",
+      "completed" : true,
+      "completedDate" : 1793730072.542448,
+      "tags" : [
+        "#refactor"
+      ],
+      "title" : "Remove or migrate dead src\/card.ts code",
+      "createdDate" : 1793729611.1831012
+    },
+    {
+      "id" : 15,
+      "description" : "Tests spawn real processes via execSync. Mock child_process in index.test.ts to make tests fast and environment-independent",
+      "completedDate" : 1793730178.116771,
+      "createdDate" : 1793729611.188647,
+      "tags" : [
+        "#testing"
+      ],
+      "completed" : true,
+      "title" : "Mock execSync in CLI tests"
+    },
+    {
+      "id" : 16,
+      "description" : "Create README with usage instructions, CLI arguments, and config.json format documentation",
+      "createdDate" : 1793729611.1938119,
+      "completed" : true,
+      "completedDate" : 1793730246.497134,
+      "title" : "Add README.md documentation",
+      "tags" : [
+        "#documentation"
+      ]
+    },
+    {
+      "description" : "minimist is listed as a dependency but never used. Remove it from package.json",
+      "tags" : [
+        "#cleanup"
+      ],
+      "title" : "Remove unused minimist dependency",
+      "createdDate" : 1793729611.199105,
+      "completed" : true,
+      "id" : 17,
+      "completedDate" : 1793730281.812535
+    },
+    {
+      "title" : "Consistent import\/require styles",
+      "completedDate" : 1793730309.9814,
+      "completed" : true,
+      "description" : "SendToPrinter uses require() for fs, os, child_process while rest of code uses imports. Convert to import statements",
+      "tags" : [
+        "#refactor"
+      ],
+      "createdDate" : 1793729611.20419,
+      "id" : 18
+    },
+    {
+      "title" : "Type errors in try\/catch blocks",
+      "id" : 19,
+      "completed" : true,
+      "tags" : [
+        "#refactor"
+      ],
+      "description" : "error parameter in try\/catch blocks is untyped. Use 'e: unknown' with instanceof Error checks",
+      "completedDate" : 1793730365.329648,
+      "createdDate" : 1793729611.208401
+    },
+    {
+      "completedDate" : 1793730824.2190981,
+      "completed" : true,
+      "description" : "Move the actual formatting logic from src\/card.ts to src\/formatter\/card.ts and delete src\/card.ts",
+      "tags" : [
+        "#refactor"
+      ],
+      "title" : "Migrate formatter logic from src\/card.ts to src\/formatter\/card.ts",
+      "createdDate" : 1793730637.9245548,
+      "id" : 20
+    },
+    {
+      "description" : "Update README to accurately describe the actual implementation (generic printer support via lp), not Zebra\/ZPL",
+      "completedDate" : 1793730909.1472359,
+      "title" : "Fix README to accurately describe implementation",
+      "tags" : [
+        "#documentation"
+      ],
+      "completed" : true,
+      "id" : 21,
+      "createdDate" : 1793730637.9301119
+    },
+    {
+      "completed" : true,
+      "description" : "Make config parse errors reportable instead of silently swallowed. Throw errors or return error object",
+      "completedDate" : 1793731107.0529342,
+      "createdDate" : 1793730637.935281,
+      "tags" : [
+        "#bug"
+      ],
+      "id" : 22,
+      "title" : "Improve config parse error handling"
+    },
+    {
+      "id" : 23,
+      "completedDate" : 1793731316.479188,
+      "title" : "Add CLI integration tests",
+      "completed" : true,
+      "description" : "Add tests for argument parsing, printer sending, and config loading errors using mocked child_process",
+      "tags" : [
+        "#testing"
+      ],
+      "createdDate" : 1793730637.940901
+    },
+    {
+      "completed" : true,
+      "description" : "Cache the config object instead of reading config.json from disk on every call",
+      "title" : "Cache config loading",
+      "completedDate" : 1793731491.0800428,
+      "id" : 24,
+      "createdDate" : 1793730637.9464121,
+      "tags" : [
+        "#refactor"
+      ]
+    },
+    {
+      "description" : "Add documentation explaining the hardcoded values for card dimensions and other magic numbers",
+      "id" : 25,
+      "completedDate" : 1793731580.1483121,
+      "title" : "Document magic numbers",
+      "tags" : [
+        "#documentation"
+      ],
+      "completed" : true,
+      "createdDate" : 1793730637.9510109
+    },
+    {
+      "completed" : true,
+      "completedDate" : 1793731782.4173231,
+      "id" : 26,
+      "description" : "Implement proper logging with severity levels instead of mixing console.log and console.error",
+      "tags" : [
+        "#refactor"
+      ],
+      "createdDate" : 1793730637.9562171,
+      "title" : "Add logging framework"
+    },
+    {
+      "createdDate" : 1793730637.9609189,
+      "title" : "Use CLI argument parsing library",
+      "id" : 27,
+      "completedDate" : 1793732024.9144681,
+      "description" : "Use a library like yargs or commander.js instead of manual argument parsing with no validation",
+      "tags" : [
+        "#refactor"
+      ],
+      "completed" : true
+    }
+  ]
 }
