@@ -1,0 +1,14 @@
+{
+  "tasks" : [
+
+  ],
+  "config" : {
+    "tagDisplayLimit" : 0,
+    "lists" : [
+      "backlogTags",
+      "pinTags",
+      "command"
+    ],
+    "sort" : "completed"
+  }
+}
