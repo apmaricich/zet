@@ -29,7 +29,8 @@ export function generateMonthlyCard(
   lines.push(`S${yy}•${month}\n`);
 
   // Day of week headers
-  lines.push("  S   M   T   W   T   F   S\n");
+  lines.push("  S   M   T   W   T   F   S");
+  lines.push(" ──────────────────────────\n");
 
   // Date grid
   const daysInMonth = getDaysInMonth(year, month);
