@@ -15,6 +15,7 @@ import { join } from 'path';
 import { execFileSync } from 'child_process';
 import { Command } from 'commander';
 import { formatCardToString } from './formatter/card';
+import { generateCalendarCard, type CalendarConfig } from './formatter/calendar';
 import { getCardDimensions, getPrinterConfig, getDefaultPrinter } from './config/config';
 import { info, error } from './logging';
 
@@ -89,7 +90,89 @@ function printTestCard(dryRun: boolean): void {
   }
 }
 
+function printCalendar(month: number, year: number, dryRun: boolean, printerName: string): void {
+
+  const dims = getCardDimensions();
+  const calConfig: CalendarConfig = { width: dims.width, height: dims.height };
+  const cardText = generateCalendarCard(month, year, calConfig);
+
+  if (dryRun) {
+    console.log('=== Zet Calendar (dry-run) ===');
+    console.log(cardText);
+    console.log('=== End Calendar ===');
+    return;
+  }
+
+  try {
+    const success = sendCalendarToPrinter(printerName, cardText, dims);
+    if (!success) {
+      error('sendCalendarToPrinter failed');
+      process.exit(2);
+    }
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    error(`Error sending calendar to printer: ${msg}`);
+    process.exit(3);
+  }
+}
+
 import type { CardConfig } from './formatter/card';
+
+function sendCalendarToPrinter(printerName: string, text: string, dims: CardConfig): boolean {
+  const printer = getPrinterConfig(printerName);
+  if (!printer) {
+    error(`Error: Printer "${printerName}" not found in config.json`);
+    return false;
+  }
+
+  // Validate printer configuration
+  if (!printer.type || !['pdf', 'image'].includes(printer.type)) {
+    error(`Error: Printer "${printerName}" has invalid or missing type`);
+    return false;
+  }
+  if (!printer.path) {
+    error(`Error: Printer "${printerName}" has invalid or missing path`);
+    return false;
+  }
+  if (typeof printer.width !== 'number' || typeof printer.height !== 'number') {
+    error(`Error: Printer "${printerName}" has invalid dimensions`);
+    return false;
+  }
+
+  info(`Sending calendar to printer: ${printerName} (type: ${printer.type}, path: ${printer.path})`);
+
+  // Write calendar card directly (no additional formatting)
+  const fileName = `zet-calendar-${Date.now()}.txt`;
+  const filePath = join(tmpdir(), fileName);
+
+  try {
+    writeFileSync(filePath, text);
+
+    // Use lp command to print
+    // Use 3x5 index card paper size in portrait orientation (orientation-requested=3)
+    execFileSync('lp', [
+      '-d', printer.path,
+      '-o', 'media=3x5',
+      '-o', 'orientation-requested=3',
+      '-o', 'fit-to-page',
+      filePath
+    ]);
+    info(`Calendar print job sent successfully to ${printerName}`);
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    error(`Error sending calendar to printer: ${msg}`);
+    return false;
+  } finally {
+    // Clean up temp file
+    try {
+      unlinkSync(filePath);
+    } catch {
+      // Ignore cleanup errors
+    }
+  }
+
+  return true;
+}
 
 function sendToPrinter(printerName: string, text: string, dims: CardConfig): boolean {
   const printer = getPrinterConfig(printerName);
@@ -171,6 +254,46 @@ function main(): void {
     .option('--dry-run', 'Preview the test card without printing')
     .action((options) => {
       printTestCard(options.dryRun);
+      process.exit(0);
+    });
+
+  // Subcommand: calendar
+  program
+    .command('calendar')
+    .description('Print a monthly calendar card')
+    .option('--month <m>', 'Month number (1-12)')
+    .option('--year <y>', 'Year (4 digits)')
+    .option('--printer <name>', 'Use a specific printer', getDefaultPrinter())
+    .option('--config <path>', 'Path to config file', './config.json')
+    .action((options, cmd) => {
+      const parentOptions = cmd.parent.opts();
+      const month = options.month ? parseInt(options.month, 10) : null;
+      const year = options.year ? parseInt(options.year, 10) : null;
+
+      if (month === null && year === null) {
+        error('Error: --month and --year are required for the calendar command.');
+        error('Usage: zet calendar --month <1-12> --year <YYYY> [options]');
+        process.exit(1);
+      }
+
+      if (month === null) {
+        error('Error: --month is required (with --year).');
+        error('Usage: zet calendar --month <1-12> --year <YYYY> [options]');
+        process.exit(1);
+      }
+
+      if (year === null) {
+        error('Error: --year is required (with --month).');
+        error('Usage: zet calendar --month <1-12> --year <YYYY> [options]');
+        process.exit(1);
+      }
+
+      if (month < 1 || month > 12) {
+        error(`Error: --month must be between 1 and 12, got ${month}.`);
+        process.exit(1);
+      }
+
+      printCalendar(month, year, parentOptions.dryRun, options.printer);
       process.exit(0);
     });
 
